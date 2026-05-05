@@ -1,0 +1,290 @@
+.hero {
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  background: var(--bg-main);
+  position: relative;
+  overflow: hidden;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-main);
+  z-index: 90;
+  pointer-events: none;
+}
+
+.columns {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+/* ── Left: Video ──────────────────────── */
+
+.videoCol {
+  width: 50%;
+  height: 100vh;
+  max-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.videoWrapper {
+  flex: 1;
+  position: relative;
+  background: var(--bg-card);
+  overflow: hidden;
+}
+
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.playBtn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  animation: pulse 2.5s ease-in-out infinite;
+  z-index: 2;
+  transition: background 250ms var(--ease-smooth);
+}
+
+.playBtn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50%      { transform: translate(-50%, -50%) scale(1.08); }
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(26, 26, 26, 0.85);
+  font: 400 0.75rem/1 var(--font-dm-mono-var), monospace;
+  color: var(--text-muted);
+}
+
+.timeDisplay {
+  white-space: nowrap;
+  min-width: 90px;
+}
+
+.progressBar {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--orange);
+  border-radius: 2px;
+  transition: width 100ms linear;
+}
+
+.controlBtn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 250ms var(--ease-smooth);
+}
+
+.controlBtn:hover {
+  color: var(--text-white);
+}
+
+/* ── Right: Experience Drawer ─────────── */
+
+.expCol {
+  width: 50%;
+  height: 100vh;
+  max-height: 100vh;
+  background: var(--bg-card);
+  padding: 80px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-y: auto;
+  transition: box-shadow 400ms var(--ease-smooth);
+}
+
+.drawerLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--pink);
+  opacity: 0;
+  transition: opacity 300ms var(--ease-smooth);
+}
+
+.expAccent {
+  width: 80px;
+  height: 2px;
+  background: var(--pink);
+  margin-bottom: 16px;
+}
+
+.expLabel {
+  font: 500 0.7rem/1 var(--font-dm-mono-var), monospace;
+  color: var(--text-pink);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 20px;
+}
+
+.expBio {
+  font: 600 1.3rem/1.4 var(--font-syne-var), sans-serif;
+  color: var(--text-white);
+  max-width: 380px;
+  margin-bottom: 16px;
+}
+
+.expLocation {
+  font: 400 0.8rem/1 var(--font-dm-mono-var), monospace;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 0 16px;
+}
+
+/* ── Experience Rows ──────────────────── */
+
+.expRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 14px 0 14px 8px;
+  border-left: 2px solid transparent;
+  cursor: default;
+  transition: background 250ms var(--ease-smooth),
+              border-color 250ms var(--ease-smooth),
+              padding-left 250ms var(--ease-smooth);
+}
+
+.expRow:hover {
+  background: var(--bg-hover);
+  border-left-color: var(--pink);
+  padding-left: 16px;
+}
+
+.expYears {
+  font: 400 0.75rem/1.4 var(--font-dm-mono-var), monospace;
+  color: var(--text-muted);
+  white-space: nowrap;
+  min-width: 130px;
+}
+
+.expInfo {
+  flex: 1;
+}
+
+.expRole {
+  font: 600 0.95rem/1.3 var(--font-syne-var), sans-serif;
+  color: var(--text-white);
+}
+
+.expCompany {
+  font: 400 0.85rem/1.3 var(--font-syne-var), sans-serif;
+  color: var(--text-muted);
+}
+
+.expArrow {
+  font-size: 1rem;
+  color: var(--pink);
+  opacity: 0;
+  transform: rotate(0deg);
+  transition: opacity 250ms var(--ease-smooth),
+              transform 250ms var(--ease-smooth);
+}
+
+.expRow:hover .expArrow {
+  opacity: 1;
+  transform: rotate(-45deg);
+}
+
+/* ── CV Button ────────────────────────── */
+
+.cvButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: var(--r-pill);
+  background: var(--pink);
+  color: var(--text-dark);
+  font: 600 0.85rem/1 var(--font-syne-var), sans-serif;
+  text-decoration: none;
+  margin-top: 16px;
+  align-self: flex-start;
+  transition: background 250ms var(--ease-smooth);
+}
+
+.cvButton:hover {
+  background: var(--pink-dark);
+}
+
+/* ── Mobile ───────────────────────────── */
+
+@media (max-width: 768px) {
+  .columns {
+    flex-direction: column;
+  }
+
+  .videoCol {
+    width: 100%;
+    min-height: 50vh;
+  }
+
+  .expCol {
+    width: 100%;
+    padding: 40px 20px;
+  }
+
+  .expYears {
+    min-width: 100px;
+    font-size: 0.65rem;
+  }
+}

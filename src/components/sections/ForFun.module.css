@@ -1,0 +1,153 @@
+.section {
+  background: var(--bg-main);
+  padding: 80px 0 128px;
+}
+
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.label {
+  font: 500 0.75rem/1 var(--font-dm-mono-var), monospace;
+  color: var(--text-pink);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 20px;
+}
+
+.heading {
+  font: 800 clamp(3rem, 8vw, 5rem)/0.95 var(--font-syne-var), sans-serif;
+  color: var(--text-white);
+  margin-bottom: 48px;
+}
+
+.heart {
+  color: var(--pink);
+}
+
+/* ── Cards ────────────────────────────── */
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  width: 100%;
+  height: 140px;
+  border-radius: var(--r-pill);
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  gap: 32px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: none;
+  text-align: left;
+  transition: background 350ms var(--ease-smooth);
+}
+
+.card:hover {
+  background: var(--bg-hover);
+}
+
+/* ── Circle ───────────────────────────── */
+
+.circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 1.2rem/1 var(--font-syne-var), sans-serif;
+  color: var(--text-dark);
+  overflow: hidden;
+}
+
+.circleImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Label ────────────────────────────── */
+
+.cardLabel {
+  font: 800 clamp(1.5rem, 3vw, 2.5rem)/1.1 var(--font-syne-var), sans-serif;
+  color: var(--text-white);
+  text-transform: uppercase;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Description (slides in on hover) ── */
+
+.cardDesc {
+  font: 400 0.8rem/1.5 var(--font-dm-mono-var), monospace;
+  color: var(--text-muted);
+  max-width: 260px;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 350ms var(--ease-smooth),
+              transform 350ms var(--ease-smooth);
+  flex-shrink: 0;
+}
+
+.card:hover .cardDesc {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Arrow button ─────────────────────── */
+
+.cardArrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--pink);
+  background: none;
+  color: var(--pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1rem;
+  transition: transform 250ms var(--ease-smooth),
+              background 250ms var(--ease-smooth);
+}
+
+.card:hover .cardArrow {
+  transform: rotate(-45deg);
+  background: rgba(242, 181, 160, 0.1);
+}
+
+/* ── Mobile ───────────────────────────── */
+
+@media (max-width: 768px) {
+  .card {
+    height: 120px;
+    padding: 0 20px;
+    gap: 16px;
+  }
+
+  .circle {
+    width: 56px;
+    height: 56px;
+    font-size: 0.9rem;
+  }
+
+  .cardDesc {
+    display: none;
+  }
+
+  .cardLabel {
+    font-size: clamp(1rem, 4vw, 1.5rem);
+  }
+}
