@@ -75,11 +75,20 @@
   color: var(--text-dark);
   font: 700 0.95rem/1 var(--font-syne-var), sans-serif;
   text-decoration: none;
-  transition: background 250ms var(--ease-smooth);
+  transition: background 250ms var(--ease-smooth),
+              transform 250ms var(--ease-smooth),
+              box-shadow 250ms var(--ease-smooth);
 }
 
 .ctaBtn:hover {
   background: var(--pink-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(242, 181, 160, 0.25);
+}
+
+.ctaBtn:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 3px;
 }
 
 /* ── Footer ───────────────────────────── */
@@ -102,11 +111,27 @@
   font: 400 0.78rem/1 var(--font-dm-mono-var), monospace;
   color: var(--text-muted);
   text-decoration: none;
+  position: relative;
   transition: color 250ms var(--ease-smooth);
+}
+
+.footerLink::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--pink);
+  transition: width 300ms var(--ease-smooth);
 }
 
 .footerLink:hover {
   color: var(--text-white);
+}
+
+.footerLink:hover::after {
+  width: 100%;
 }
 
 .footerSep {

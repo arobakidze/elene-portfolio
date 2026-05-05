@@ -29,6 +29,7 @@ export function Hero({ onOpenCV }: HeroProps) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [videoError, setVideoError] = useState(false);
 
   const { setCursorState, resetCursor } = useCursor();
 
@@ -157,36 +158,58 @@ export function Hero({ onOpenCV }: HeroProps) {
             onMouseEnter={() => setCursorState("hover-video")}
             onMouseLeave={resetCursor}
           >
-            <video
-              ref={videoRef}
-              className={styles.video}
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster="/images/hero-poster.jpg"
-              onTimeUpdate={handleTimeUpdate}
-              onLoadedMetadata={handleTimeUpdate}
-            >
-              <source src="/videos/elene-reel.mp4" type="video/mp4" />
-            </video>
+            {videoError ? (
+              <div className={styles.reelPlaceholder}>
+                <div className={styles.reelPlaceholderInner}>
+                  <span className={styles.reelPlaceholderIcon}>▶</span>
+                  <p className={styles.reelPlaceholderTitle}>Design Reel</p>
+                  <p className={styles.reelPlaceholderSub}>Coming soon</p>
+                  <button
+                    className={styles.reelPlaceholderCta}
+                    onClick={() => {
+                      const el = document.getElementById("disciplines");
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                    }}
+                  >
+                    View selected work instead →
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <video
+                  ref={videoRef}
+                  className={styles.video}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  poster="/images/hero-poster.jpg"
+                  onTimeUpdate={handleTimeUpdate}
+                  onLoadedMetadata={handleTimeUpdate}
+                  onError={() => setVideoError(true)}
+                >
+                  <source src="/videos/elene-reel.mp4" type="video/mp4" />
+                </video>
 
-            <button
-              className={styles.playBtn}
-              onClick={togglePlay}
-              aria-label={isPlaying ? "Pause video" : "Play video"}
-            >
-              {isPlaying ? (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                  <rect x="6" y="4" width="4" height="16" />
-                  <rect x="14" y="4" width="4" height="16" />
-                </svg>
-              ) : (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                  <polygon points="6,3 20,12 6,21" />
-                </svg>
-              )}
-            </button>
+                <button
+                  className={styles.playBtn}
+                  onClick={togglePlay}
+                  aria-label={isPlaying ? "Pause video" : "Play video"}
+                >
+                  {isPlaying ? (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                      <rect x="6" y="4" width="4" height="16" />
+                      <rect x="14" y="4" width="4" height="16" />
+                    </svg>
+                  ) : (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                      <polygon points="6,3 20,12 6,21" />
+                    </svg>
+                  )}
+                </button>
+              </>
+            )}
           </div>
 
           <div className={styles.controls}>

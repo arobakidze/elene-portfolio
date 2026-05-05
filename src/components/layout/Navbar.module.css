@@ -53,17 +53,29 @@
   background: transparent;
   transition: background 250ms var(--ease-smooth),
               border-color 250ms var(--ease-smooth),
-              color 250ms var(--ease-smooth);
+              color 250ms var(--ease-smooth),
+              transform 200ms var(--ease-smooth);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
 }
 
-.pill:hover,
+.pill:hover {
+  background: rgba(242, 181, 160, 0.15);
+  border-color: var(--pink);
+  color: var(--text-white);
+  transform: translateY(-1px);
+}
+
 .pill.active {
   background: var(--pink);
   border-color: var(--pink);
   color: var(--text-dark);
+}
+
+.pill:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
 }
 
 .reelPill {

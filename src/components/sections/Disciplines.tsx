@@ -52,6 +52,7 @@ export function Disciplines({ onOpenPanel }: DisciplinesProps) {
             onClick={() => onOpenPanel(i)}
             onMouseEnter={() => setCursorState("hover-disc")}
             onMouseLeave={resetCursor}
+            aria-label={`View ${disc.name} projects`}
           >
             <span className={styles.number}>{disc.number}</span>
             <span className={styles.name}>{disc.name}</span>

@@ -47,13 +47,22 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  border: none;
+  border: 1px solid transparent;
   text-align: left;
-  transition: background 350ms var(--ease-smooth);
+  transition: background 350ms var(--ease-smooth),
+              border-color 350ms var(--ease-smooth),
+              transform 300ms var(--ease-smooth);
 }
 
 .card:hover {
   background: var(--bg-hover);
+  border-color: rgba(242, 181, 160, 0.15);
+  transform: translateX(6px);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
 }
 
 /* ── Circle ───────────────────────────── */
