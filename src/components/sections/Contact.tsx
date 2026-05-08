@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { siteInfo } from "@/data/content";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { SocialHoverGrid } from "@/components/sections/SocialHoverGrid";
 import { useCursor } from "@/components/providers/CursorContext";
 import styles from "./Contact.module.css";
 
@@ -95,6 +96,8 @@ export function Contact() {
             </MagneticButton>
           </div>
         </div>
+
+        <SocialHoverGrid />
 
         <footer className={styles.footer}>
           <div className={styles.footerTop}>

@@ -15,7 +15,7 @@ export const siteInfo = {
   available: true,
   behance: "https://www.behance.net/eleneart",
   linkedin: "https://www.linkedin.com/in/elene-luashvili-5671a0237/",
-  instagram: "@elene.luashvili", // TODO: confirm exact handle
+  instagram: "@elene.luashvili",
   cvPath: "/EleneCV.pdf",
 }
 
