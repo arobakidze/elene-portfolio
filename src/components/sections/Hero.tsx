@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
-import { siteInfo, experience } from "@/data/content";
+import { siteInfo, experience, projectCoverFallback } from "@/data/content";
 import { useCursor } from "@/components/providers/CursorContext";
 import styles from "./Hero.module.css";
 
@@ -184,7 +184,7 @@ export function Hero({ onOpenCV }: HeroProps) {
                   muted
                   loop
                   playsInline
-                  poster="/images/hero-poster.jpg"
+                  poster={projectCoverFallback}
                   onTimeUpdate={handleTimeUpdate}
                   onLoadedMetadata={handleTimeUpdate}
                   onError={() => setVideoError(true)}

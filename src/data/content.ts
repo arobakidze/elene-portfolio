@@ -19,6 +19,8 @@ export const siteInfo = {
   cvPath: "/EleneCV.pdf",
 }
 
+export const projectCoverFallback = "/reference/mockup.png"
+
 export const experience = [
   {
     id: 1,
@@ -70,7 +72,7 @@ export const disciplines = [
         role: "Interior Designer",
         tools: "AutoCAD, 3DS Max",
         behanceUrl: "https://www.behance.net/eleneart",
-        image: "/images/int-01.jpg",
+        image: projectCoverFallback,
       },
     ],
   },
@@ -89,7 +91,7 @@ export const disciplines = [
         role: "Industrial Designer",
         tools: "Fusion 360, Photoshop",
         behanceUrl: "https://www.behance.net/gallery/234023969/PACKAGING-DESIGN",
-        image: "/images/ind-01.jpg",
+        image: projectCoverFallback,
       },
       {
         id: "ind-02",
@@ -100,7 +102,7 @@ export const disciplines = [
         role: "Product Designer",
         tools: "Fusion 360, 3DS Max",
         behanceUrl: "https://www.behance.net/gallery/234023297/Product-Design",
-        image: "/images/ind-02.jpg",
+        image: projectCoverFallback,
       },
     ],
   },
@@ -119,7 +121,7 @@ export const disciplines = [
         role: "UI/UX Designer",
         tools: "Figma",
         behanceUrl: "https://www.behance.net/gallery/238532615/Smartwatch-UIUX",
-        image: "/images/ui-01.jpg",
+        image: projectCoverFallback,
       },
       {
         id: "ui-02",
@@ -130,7 +132,7 @@ export const disciplines = [
         role: "UI Designer",
         tools: "Figma",
         behanceUrl: "https://www.behance.net/gallery/238844265/AI-CHAT-INTERFACE-UI",
-        image: "/images/ui-02.jpg",
+        image: projectCoverFallback,
       },
       {
         id: "ui-03",
@@ -141,7 +143,7 @@ export const disciplines = [
         role: "UI Designer",
         tools: "Figma",
         behanceUrl: "https://www.behance.net/gallery/234023111/SLOT-LEADERBOARD-UI",
-        image: "/images/ui-03.jpg",
+        image: projectCoverFallback,
       },
       {
         id: "ill-01",
@@ -152,7 +154,7 @@ export const disciplines = [
         role: "Illustrator",
         tools: "Procreate, Photoshop",
         behanceUrl: "https://www.behance.net/gallery/186192695/ILLUSTRATIONS-FOR-A-BOARD-GAME",
-        image: "/images/ill-01.jpg",
+        image: projectCoverFallback,
       },
       {
         id: "ill-02",
@@ -163,7 +165,7 @@ export const disciplines = [
         role: "2D Game Artist",
         tools: "Procreate, Photoshop",
         behanceUrl: "https://www.behance.net/gallery/238768981/CHARACTER-DESIGN-videogame",
-        image: "/images/ill-02.jpg",
+        image: projectCoverFallback,
       },
       {
         id: "ill-03",
@@ -174,7 +176,7 @@ export const disciplines = [
         role: "Illustrator",
         tools: "Procreate",
         behanceUrl: "https://www.behance.net/gallery/186193369/COMIC-PIECE-COLOR-WHITE",
-        image: "/images/ill-03.jpg",
+        image: projectCoverFallback,
       },
       {
         id: "ill-04",
@@ -185,7 +187,7 @@ export const disciplines = [
         role: "Illustrator",
         tools: "Procreate",
         behanceUrl: "https://www.behance.net/gallery/244726981/Character-Illustrations",
-        image: "/images/ill-04.jpg",
+        image: projectCoverFallback,
       },
       {
         id: "ill-05",
@@ -196,7 +198,7 @@ export const disciplines = [
         role: "Illustrator",
         tools: "Illustrator, Photoshop",
         behanceUrl: "https://www.behance.net/gallery/244727121/poster-illustration",
-        image: "/images/ill-05.jpg",
+        image: projectCoverFallback,
       },
     ],
   },
@@ -215,7 +217,7 @@ export const disciplines = [
         role: "Motion Designer",
         tools: "After Effects, Premiere Pro",
         behanceUrl: "https://www.behance.net/gallery/244722415/Animation",
-        image: "/images/mot-01.jpg",
+        image: projectCoverFallback,
       },
     ],
   },

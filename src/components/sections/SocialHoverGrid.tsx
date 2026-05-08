@@ -6,8 +6,8 @@ import { siteInfo } from "@/data/content";
 import { cn } from "@/lib/utils";
 import styles from "./SocialHoverGrid.module.css";
 
-function gridHref(url: string): string {
-  return url.trim() || "#";
+function gridHref(url: string | undefined | null): string {
+  return typeof url === "string" && url.trim() ? url.trim() : "#";
 }
 
 function Card({
@@ -200,11 +200,14 @@ function RedditIcon() {
 export function SocialHoverGrid() {
   const gid = useId().replace(/:/g, "");
 
-  const igHandle = siteInfo.instagram.trim();
+  const igRaw = typeof siteInfo.instagram === "string" ? siteInfo.instagram : "";
+  const igHandle = igRaw.trim();
   const instagramHref =
     igHandle.startsWith("http") ?
       igHandle
-    : `https://www.instagram.com/${igHandle.replace(/^@/, "")}/`;
+    : igHandle ?
+      `https://www.instagram.com/${igHandle.replace(/^@/, "")}/`
+    : "#";
 
   const h = {
     instagram: gridHref(instagramHref),
