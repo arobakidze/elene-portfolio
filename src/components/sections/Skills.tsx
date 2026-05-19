@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import {
   SiFigma,
   SiAutodesk,
   SiBlender,
 } from "@icons-pack/react-simple-icons";
 import { skills } from "@/data/content";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useSubtleHover } from "@/hooks/useSubtleHover";
 import styles from "./Skills.module.css";
 
 const ICON_SIZE = 40;
@@ -67,41 +67,70 @@ const iconComponents = [
   { Comp: () => <SiBlender size={ICON_SIZE} color={ICON_COLOR} title="Blender" />, label: "Blender" },
 ];
 
+function SkillIconCell({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  const cellRef = useRef<HTMLSpanElement>(null);
+  useSubtleHover(cellRef);
+
+  return (
+    <span ref={cellRef} className={styles.iconCell}>
+      {children}
+      <span className={styles.iconLabel}>{label}</span>
+    </span>
+  );
+}
+
 export function Skills() {
   const sectionRef = useRef<HTMLElement>(null);
+  const labelRef = useRef<HTMLParagraphElement>(null);
   const pillsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    let tweens: gsap.core.Tween | null = null;
-
-    if (pillsRef.current) {
-      tweens = gsap.from(pillsRef.current.children, {
+  useScrollReveal(sectionRef, {
+    getSteps: () => [
+      {
+        targets: [labelRef.current],
         y: 20,
+        opacity: 0,
+        duration: 0.55,
+      },
+      {
+        targets: pillsRef.current
+          ? (Array.from(pillsRef.current.children) as HTMLElement[])
+          : [],
+        y: 18,
         opacity: 0,
         stagger: 0.06,
         duration: 0.5,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-        },
-      });
-    }
-
-    return () => {
-      if (tweens) {
-        if (tweens.scrollTrigger) tweens.scrollTrigger.kill();
-        tweens.kill();
-      }
-    };
-  }, []);
+        delay: 0.05,
+      },
+      {
+        targets: sectionRef.current
+          ? Array.from(
+              sectionRef.current.querySelectorAll<HTMLElement>(
+                `.${styles.iconCell}`
+              )
+            )
+          : [],
+        y: 16,
+        opacity: 0,
+        stagger: 0.05,
+        duration: 0.45,
+        delay: 0.1,
+      },
+    ],
+  });
 
   return (
     <section id="skills" ref={sectionRef} className={styles.section}>
       <div className={styles.container}>
-        <p className={styles.label}>[Tools I Use]</p>
+        <p ref={labelRef} className={styles.label}>
+          [Tools I Use]
+        </p>
 
         <div ref={pillsRef} className={styles.pills}>
           {skills.categories.map((cat) => (
@@ -116,10 +145,9 @@ export function Skills() {
         {iconComponents.map(({ Comp, label }, i) => (
           <span key={label} className={styles.iconItem}>
             {i > 0 && <span className={styles.iconDivider} />}
-            <span className={styles.iconCell}>
+            <SkillIconCell label={label}>
               <Comp />
-              <span className={styles.iconLabel}>{label}</span>
-            </span>
+            </SkillIconCell>
           </span>
         ))}
       </div>

@@ -2,9 +2,15 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { siteInfo, experience, projectCoverFallback } from "@/data/content";
 import { useCursor } from "@/components/providers/CursorContext";
+import { useIntro } from "@/components/providers/IntroProvider";
+import { useMagneticEffect } from "@/hooks/useMagneticEffect";
+import { EASE_IN_OUT, EASE_OUT } from "@/lib/gsap/motion";
 import styles from "./Hero.module.css";
+
+gsap.registerPlugin(useGSAP);
 
 function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60);
@@ -24,6 +30,8 @@ export function Hero({ onOpenCV }: HeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<HTMLDivElement[]>([]);
+  const cvButtonRef = useRef<HTMLButtonElement>(null);
+  const heroScopeRef = useRef<HTMLElement>(null);
 
   const [muted, setMuted] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
@@ -32,48 +40,62 @@ export function Hero({ onOpenCV }: HeroProps) {
   const [videoError, setVideoError] = useState(false);
 
   const { setCursorState, resetCursor } = useCursor();
+  const { registerIntro } = useIntro();
 
-  // Page load animation
+  useMagneticEffect(cvButtonRef, 0.2);
+
+  useGSAP(
+    () => {
+      if (videoColRef.current) gsap.set(videoColRef.current, { opacity: 0, x: -40 });
+      if (expColRef.current) gsap.set(expColRef.current, { opacity: 0, x: 40 });
+    },
+    { scope: heroScopeRef }
+  );
+
   useEffect(() => {
-    const tl = gsap.timeline();
-
-    tl.fromTo(
-      overlayRef.current,
-      { yPercent: 0 },
-      { yPercent: -100, duration: 1.1, ease: "power3.inOut" }
-    )
-      .fromTo(
-        videoColRef.current,
-        { x: -40, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
-        "-=0.4"
-      )
-      .fromTo(
-        expColRef.current,
-        { x: 40, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
-        "<"
-      )
-      .fromTo(
-        rowRefs.current,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.07, ease: "power2.out" },
-        "-=0.3"
-      );
-
-    return () => {
-      tl.kill();
-    };
-  }, []);
+    return registerIntro("hero", (tl) => {
+      if (overlayRef.current) {
+        tl.fromTo(
+          overlayRef.current,
+          { yPercent: 0 },
+          { yPercent: -100, duration: 1.1, ease: EASE_IN_OUT }
+        );
+      }
+      if (videoColRef.current) {
+        tl.fromTo(
+          videoColRef.current,
+          { x: -40, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.8, ease: EASE_OUT },
+          "-=0.4"
+        );
+      }
+      if (expColRef.current) {
+        tl.fromTo(
+          expColRef.current,
+          { x: 40, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.8, ease: EASE_OUT },
+          "<"
+        );
+      }
+      if (rowRefs.current.length) {
+        tl.fromTo(
+          rowRefs.current,
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, stagger: 0.07, duration: 0.7, ease: EASE_OUT },
+          "-=0.3"
+        );
+      }
+    });
+  }, [registerIntro]);
 
   // Drawer hover interaction
   const handleDrawerEnter = useCallback(() => {
     if (!expColRef.current || !drawerLineRef.current) return;
     gsap.to(expColRef.current, {
-      y: -6,
-      scaleX: 1.015,
+      y: -4,
+      scaleX: 1.01,
       duration: 0.4,
-      ease: "back.out(1.7)",
+      ease: EASE_OUT,
     });
     gsap.to(drawerLineRef.current, { opacity: 1, duration: 0.3 });
     gsap.to(expColRef.current, {
@@ -88,7 +110,7 @@ export function Hero({ onOpenCV }: HeroProps) {
       y: 0,
       scaleX: 1,
       duration: 0.5,
-      ease: "power2.out",
+      ease: EASE_OUT,
     });
     gsap.to(drawerLineRef.current, { opacity: 0, duration: 0.3 });
     gsap.to(expColRef.current, {
@@ -97,7 +119,6 @@ export function Hero({ onOpenCV }: HeroProps) {
     });
   }, []);
 
-  // Video controls
   const togglePlay = useCallback(() => {
     const vid = videoRef.current;
     if (!vid) return;
@@ -147,12 +168,12 @@ export function Hero({ onOpenCV }: HeroProps) {
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <section id="home" className={styles.hero}>
+    <section id="home" ref={heroScopeRef} className={styles.hero}>
       <div ref={overlayRef} className={styles.overlay} />
 
       <div className={styles.columns}>
         {/* Left: Video */}
-        <div ref={videoColRef} className={styles.videoCol} style={{ opacity: 0 }}>
+        <div ref={videoColRef} className={styles.videoCol}>
           <div
             className={styles.videoWrapper}
             onMouseEnter={() => setCursorState("hover-video")}
@@ -271,7 +292,6 @@ export function Hero({ onOpenCV }: HeroProps) {
         <div
           ref={expColRef}
           className={styles.expCol}
-          style={{ opacity: 0 }}
           onMouseEnter={handleDrawerEnter}
           onMouseLeave={handleDrawerLeave}
         >
@@ -308,6 +328,7 @@ export function Hero({ onOpenCV }: HeroProps) {
           <div className={styles.divider} />
 
           <button
+            ref={cvButtonRef}
             className={styles.cvButton}
             onClick={onOpenCV}
             onMouseEnter={() => setCursorState("hover-cta")}

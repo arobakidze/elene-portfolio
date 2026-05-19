@@ -5,14 +5,21 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { navLinks, siteInfo } from "@/data/content";
 import { useCursor } from "@/components/providers/CursorContext";
+import { useIntro } from "@/components/providers/IntroProvider";
+import { canUsePointerEffects, EASE_OUT, prefersReducedMotion } from "@/lib/gsap/motion";
 import styles from "./Navbar.module.css";
 
 export function Navbar() {
   const navRef = useRef<HTMLElement>(null);
+  const logoRef = useRef<HTMLButtonElement>(null);
+  const markRef = useRef<HTMLDivElement>(null);
+  const reelRef = useRef<HTMLButtonElement>(null);
+  const pillRefs = useRef<HTMLButtonElement[]>([]);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("#home");
   const { setCursorState, resetCursor } = useCursor();
+  const { registerIntro } = useIntro();
 
   const handleCursorEnter = useCallback(() => {
     setCursorState("hover-link");
@@ -38,6 +45,67 @@ export function Navbar() {
     return () => {
       trigger.kill();
     };
+  }, []);
+
+  useEffect(() => {
+    const introTargets = [
+      logoRef.current,
+      ...pillRefs.current,
+      reelRef.current,
+      markRef.current,
+    ].filter(Boolean) as HTMLElement[];
+
+    if (introTargets.length) {
+      gsap.set(introTargets, { y: -10, opacity: 0 });
+    }
+
+    return registerIntro("navbar", (tl) => {
+      const targets = [
+        logoRef.current,
+        ...pillRefs.current,
+        reelRef.current,
+        markRef.current,
+      ].filter(Boolean) as HTMLElement[];
+
+      if (!targets.length) return;
+
+      tl.to(
+        targets,
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.55,
+          stagger: 0.04,
+          ease: EASE_OUT,
+        },
+        "-=0.55"
+      );
+    });
+  }, [registerIntro]);
+
+  useEffect(() => {
+    if (!canUsePointerEffects() || prefersReducedMotion()) return;
+
+    const cleanups: (() => void)[] = [];
+
+    pillRefs.current.forEach((pill) => {
+      if (!pill) return;
+      const onEnter = () => {
+        gsap.to(pill, { scale: 1.02, duration: 0.3, ease: EASE_OUT });
+      };
+      const onLeave = () => {
+        gsap.to(pill, { scale: 1, duration: 0.3, ease: EASE_OUT });
+      };
+      pill.addEventListener("mouseenter", onEnter);
+      pill.addEventListener("mouseleave", onLeave);
+      cleanups.push(() => {
+        pill.removeEventListener("mouseenter", onEnter);
+        pill.removeEventListener("mouseleave", onLeave);
+        gsap.set(pill, { scale: 1 });
+      });
+    });
+
+    return () => cleanups.forEach((fn) => fn());
   }, []);
 
   useEffect(() => {
@@ -87,6 +155,7 @@ export function Navbar() {
         className={`${styles.navbar} ${scrolled ? styles.scrolled : ""}`}
       >
         <button
+          ref={logoRef}
           className={styles.logo}
           onClick={scrollToTop}
           onMouseEnter={handleCursorEnter}
@@ -98,9 +167,12 @@ export function Navbar() {
         </button>
 
         <div className={styles.navCenter}>
-          {navLinks.map((link) => (
+          {navLinks.map((link, i) => (
             <button
               key={link.href}
+              ref={(el) => {
+                if (el) pillRefs.current[i] = el;
+              }}
               className={`${styles.pill} ${
                 activeSection === link.href ? styles.active : ""
               }`}
@@ -113,6 +185,7 @@ export function Navbar() {
           ))}
 
           <button
+            ref={reelRef}
             className={styles.reelPill}
             onClick={() => scrollTo("#home")}
             onMouseEnter={handleCursorEnter}
@@ -131,6 +204,7 @@ export function Navbar() {
         </div>
 
         <div
+          ref={markRef}
           className={styles.logoMark}
           onClick={scrollToTop}
           onMouseEnter={handleCursorEnter}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display, DM_Mono } from "next/font/google";
 import { GSAPProvider } from "@/components/providers/GSAPProvider";
+import { IntroProvider } from "@/components/providers/IntroProvider";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { CursorProvider } from "@/components/providers/CursorContext";
 import { CustomCursor } from "@/components/layout/CustomCursor";
@@ -48,11 +49,13 @@ export default function RootLayout({
       <body>
         <GSAPProvider>
           <SmoothScroll>
-            <CursorProvider>
-              <CustomCursor />
-              <Navbar />
-              {children}
-            </CursorProvider>
+            <IntroProvider>
+              <CursorProvider>
+                <CustomCursor />
+                <Navbar />
+                {children}
+              </CursorProvider>
+            </IntroProvider>
           </SmoothScroll>
         </GSAPProvider>
       </body>

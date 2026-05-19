@@ -1,7 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { EASE_OUT, prefersReducedMotion } from "@/lib/gsap/motion";
 import { disciplines } from "@/data/content";
 import { useCursor, type CursorState } from "@/components/providers/CursorContext";
 import styles from "./Projects.module.css";
@@ -128,8 +131,30 @@ function ProjectList({
   setCursorState: (s: CursorState) => void;
   resetCursor: () => void;
 }) {
+  const listRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const list = listRef.current;
+      if (!list || prefersReducedMotion()) return;
+
+      const rows = list.querySelectorAll<HTMLElement>(`.${styles.projectRow}`);
+      if (!rows.length) return;
+
+      gsap.from(rows, {
+        opacity: 0,
+        y: 12,
+        stagger: 0.05,
+        duration: 0.5,
+        ease: EASE_OUT,
+      });
+    },
+    { scope: listRef, dependencies: [projects] }
+  );
+
   return (
     <motion.div
+      ref={listRef}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.25 } }}
       exit={{ opacity: 0, transition: { duration: 0.15 } }}

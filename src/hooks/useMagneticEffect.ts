@@ -2,14 +2,15 @@
 
 import { useEffect, type RefObject } from "react";
 import gsap from "gsap";
+import { canUsePointerEffects, EASE_OUT, prefersReducedMotion } from "@/lib/gsap/motion";
 
 export function useMagneticEffect(
   ref: RefObject<HTMLElement | null>,
-  strength = 0.35
+  strength = 0.25
 ) {
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || !canUsePointerEffects() || prefersReducedMotion()) return;
 
     const handleMove = (e: MouseEvent) => {
       const rect = el.getBoundingClientRect();
@@ -24,7 +25,7 @@ export function useMagneticEffect(
           x: dx * strength,
           y: dy * strength,
           duration: 0.3,
-          ease: "power2.out",
+          ease: EASE_OUT,
         });
       }
     };
@@ -33,8 +34,8 @@ export function useMagneticEffect(
       gsap.to(el, {
         x: 0,
         y: 0,
-        duration: 0.5,
-        ease: "elastic.out(1, 0.5)",
+        duration: 0.45,
+        ease: EASE_OUT,
       });
     };
 
@@ -44,6 +45,7 @@ export function useMagneticEffect(
     return () => {
       window.removeEventListener("mousemove", handleMove);
       el.removeEventListener("mouseleave", handleLeave);
+      gsap.set(el, { x: 0, y: 0 });
     };
   }, [ref, strength]);
 }
